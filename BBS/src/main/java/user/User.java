@@ -8,7 +8,7 @@ public class User {
 	//DB컬럼명과 동일하게 작성 
 	private String userID;
 	private String userPassword;
-	private String usreName;
+	private String userName;
 	private String userGender;
 	private String userEmail;
 	
@@ -26,11 +26,11 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public String getUsreName() {
-		return usreName;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUsreName(String usreName) {
-		this.usreName = usreName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getUserGender() {
 		return userGender;

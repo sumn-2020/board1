@@ -28,6 +28,27 @@ request.setCharacterEncoding("UTF-8");
 
 	<%
 	
+	
+		// 로그인 된 사용자는 회원가입 페이지 못들어가게 막기
+		String userID = null;
+		if(session.getAttribute("userID") != null) { //할당된 세션이 없을 경우
+			userID = (String) session.getAttribute("userID");// 자신에게 할당된 세션을 userID라는 변수에 담기 
+		}
+		if(userID != null) { //할당된 세션이 있을 경우 
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('이미 로그인 되어있음');"); //이미 로그인 된 사람은 또다시 로그인 할 수 없도록 막기 
+			script.println("location.href = 'main.jsp'");
+			script.println("</script>");
+		}
+	
+	
+	
+	
+	
+	
+	
+	
 		if(user.getUserID() == null || user.getUserPassword() == null || user.getUserName() == null || 
 			user.getUserGender() == null || user.getUserEmail() == null) { //한 항목이라도 비어있을 경우 
 			
@@ -51,6 +72,12 @@ request.setCharacterEncoding("UTF-8");
 				script.println("history.back()");  // 이전페이지로 이동
 				script.println("</script>");
 			}else { //로그인 성공했을 경우
+				
+				// 로그인 성공시 세션 부여하기 
+				session.setAttribute("userID", user.getUserID());
+				
+				
+				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("location.href = 'main.jsp'");

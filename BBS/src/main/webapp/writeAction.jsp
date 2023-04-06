@@ -31,7 +31,7 @@ request.setCharacterEncoding("UTF-8");
 		if(session.getAttribute("userID") != null) { //할당된 세션이 없을 경우
 			userID = (String) session.getAttribute("userID");// 자신에게 할당된 세션을 userID라는 변수에 담기 
 		}
-		if(userID != null) { //할당된 세션이 있을 경우 
+		if(userID == null) { //할당된 세션이 있을 경우 
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('로그인을 하세요 ');"); //이미 로그인 된 사람은 또다시 로그인 할 수 없도록 막기 

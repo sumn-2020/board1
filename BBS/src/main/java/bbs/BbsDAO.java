@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class BbsDAO {
 
@@ -59,7 +60,7 @@ public class BbsDAO {
 	  * 게시글 번호를 점차 늘어나야하니까 마지막에 쓰인 번호에서 +1해서 점차 증가하게 만들기 
 	  * 
 	  */
-	 public int getNext() {
+	 public int getNext() { //다음으로 작성될 글 번호
 		 String SQL = "select bbsID from BBS order by bbsID desc";
 		 try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -102,5 +103,69 @@ public class BbsDAO {
 		return -1; //데이터베이스 오류 
 	 }
 	
+	 
+	 
+	 
+	 /**
+	  * 
+	  * 게시판 목록 출력하기
+	  * 
+	  * 
+	  */
+	 public ArrayList<Bbs> getList(int pageNumber) {
+		 String SQL = "select * from bbs where bbsID < ? and bbsAavailable = 1 order by bbsID desc LIMIT 10"; //삭제되지 않아서 available이 1인 글들을 10개까지만 출력하기 
+		 ArrayList<Bbs> list = new ArrayList<Bbs>();
+		 
+		 try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1,  getNext() - (pageNumber - 1) * 10); 
+			//getNext : 그 다음으로 작성될 글의 번호 (=> 만약 현재 게시글 갯수가 5라면 getNext는 6!! 6이 sql문장의 ?안에 들어가게됨 ) 
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) { // 결과가 있을 경우
+				Bbs bbs = new Bbs();
+				
+				bbs.setBbsID(rs.getInt(1));
+				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserID(rs.getString(3));
+				bbs.setBbsDate(rs.getString(4));
+				bbs.setBbsContent(rs.getString(5));
+				bbs.setBbsAavailable(rs.getInt(6));
+				list.add(bbs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;  
+	 }
+	 
+	 
+	 /**
+	  * 
+	  * 페이징 처리
+	  * 게시글이 10개 이상이라면 
+	  * 
+	  * 
+	  */
+	  public boolean nextPage(int pageNumber) {
+		  
+		  String SQL = "select * from bbs where bbsID < ? and bbsAavailable = 1";  
+			 
+			 try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1,  getNext() - (pageNumber - 1) * 10); 
+				rs = pstmt.executeQuery();
+				while(rs.next()) { // 결과가 있을 경우
+					return true; //다음 페이지로 넘어감
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;   
+	  }
+	 
+	 
+	 
+	 
 	
 }

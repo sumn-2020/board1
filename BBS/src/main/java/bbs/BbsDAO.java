@@ -143,7 +143,7 @@ public class BbsDAO {
 	 /**
 	  * 
 	  * 페이징 처리
-	  * 게시글이 10개 이상이라면 
+	  * 게시글이 10개 이상이라면 이전 다음 버튼 출력 
 	  * 
 	  * 
 	  */
@@ -165,6 +165,41 @@ public class BbsDAO {
 	  }
 	 
 	 
+	  
+	  /**
+	   * 
+	   * 뷰 페이지 출력기능 - 하나의 글 클릭시 상세 페이지 출력 
+	   * 
+	   */
+	  public Bbs getBbs(int bbsID) {
+		  
+		  String SQL = "select * from bbs where bbsID = ?";  
+			 
+			 try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1,  bbsID); 
+				rs = pstmt.executeQuery();
+				while(rs.next()) { // 결과가 있을 경우
+					Bbs bbs = new Bbs();
+					//결과로 나온 각각의 항목들은 bbs라는 인스턴스에 넣어서 getBbs라는 함수를 부른 대상에게 넘겨주기 
+					bbs.setBbsID(rs.getInt(1));
+					bbs.setBbsTitle(rs.getString(2));
+					bbs.setUserID(rs.getString(3));
+					bbs.setBbsDate(rs.getString(4));
+					bbs.setBbsContent(rs.getString(5));
+					bbs.setBbsAavailable(rs.getInt(6));
+					return bbs;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		   return null;   //해당글이 존재 하지 않을 경우 null반환 
+	  }
+	  
+	  
+	  
+
+	  
 	 
 	 
 	

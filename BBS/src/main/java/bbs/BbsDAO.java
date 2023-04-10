@@ -220,6 +220,26 @@ public class BbsDAO {
 	  }
 	  
 	  
+	  /**
+	   * 
+	   * 글 삭제 
+	   * 
+	   * @param bbsID
+	   * @return
+	   */
+	  public int delete(int bbsID) {
+		  String SQL = "update bbs set bbsAavailable =  0 where bbsID = ?";
+			 
+			 try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, bbsID); // 사용자아이디 
+				return pstmt.executeUpdate();  //update 성공했을 경우 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return -1; //데이터베이스 오류 
+	  }
+	  
 	 
 	 
 	

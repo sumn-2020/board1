@@ -198,7 +198,27 @@ public class BbsDAO {
 	  
 	  
 	  
-
+	  /**
+	   * 수정하기 
+	   * 
+	   */
+	  public int update(int bbsID, String bbsTitle, String bbsContent) {
+		  String SQL = "update bbs set bbsTitle = ?, bbsContent = ? where bbsID = ?";
+			 
+			 try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setString(1, bbsTitle); 
+				pstmt.setString(2, bbsContent); 
+				pstmt.setInt(3, bbsID); // 사용자아이디 
+				
+				return pstmt.executeUpdate();  //update 성공했을 경우 
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return -1; //데이터베이스 오류 
+	  }
+	  
 	  
 	 
 	 
